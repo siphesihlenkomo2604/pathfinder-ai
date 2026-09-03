@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { planTasks } from "@/lib/ai.functions";
+import { MicButton } from "@/components/MicButton";
 import {
   ActionButton,
   Card,
@@ -63,6 +64,17 @@ function PlannerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  function dictateHours(text: string) {
+    const words: Record<string, string> = {
+      one: "1", two: "2", three: "3", four: "4", five: "5", six: "6", seven: "7",
+      eight: "8", nine: "9", ten: "10", eleven: "11", twelve: "12",
+    };
+    const digits = text.match(/\d{1,2}/);
+    if (digits) return setHours(digits[0]);
+    const word = Object.keys(words).find((w) => text.toLowerCase().includes(w));
+    if (word) setHours(words[word]!);
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -90,7 +102,7 @@ function PlannerPage() {
       <div className="grid gap-6">
         <Card>
           <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">
-            <Field label="Available hours today">
+            <Field label="Available hours today" action={<MicButton onText={dictateHours} label="Say your available hours" />}>
               <Input
                 type="number"
                 min={1}
@@ -99,7 +111,10 @@ function PlannerPage() {
                 onChange={(e) => setHours(e.target.value)}
               />
             </Field>
-            <Field label="Priority focus">
+            <Field
+              label="Priority focus"
+              action={<MicButton onText={(t) => setFocus((v) => (v ? `${v} ${t}` : t))} label="Dictate priority focus" />}
+            >
               <Input
                 required
                 value={focus}
@@ -108,7 +123,10 @@ function PlannerPage() {
               />
             </Field>
             <div className="sm:col-span-2">
-              <Field label="Known tasks (optional)">
+              <Field
+                label="Known tasks (optional)"
+                action={<MicButton onText={(t) => setTasks((v) => (v ? `${v} ${t}` : t))} label="Dictate tasks" />}
+              >
                 <Textarea
                   rows={3}
                   value={tasks}

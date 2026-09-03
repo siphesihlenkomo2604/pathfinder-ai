@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { generateEmail } from "@/lib/ai.functions";
+import { MicButton } from "@/components/MicButton";
 import {
   ActionButton,
   Card,
@@ -50,6 +51,9 @@ function EmailPage() {
   const set = (k: keyof typeof form) => (e: { target: { value: string } }) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const dictate = (k: keyof typeof form) => (text: string) =>
+    setForm((f) => ({ ...f, [k]: f[k] ? `${f[k]} ${text}` : text }));
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -74,7 +78,7 @@ function EmailPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <form onSubmit={submit} className="flex flex-col gap-4">
-            <Field label="Job title / role">
+            <Field label="Job title / role" action={<MicButton onText={dictate("jobTitle")} label="Dictate job title" />}>
               <Input
                 required
                 value={form.jobTitle}
@@ -82,7 +86,7 @@ function EmailPage() {
                 placeholder="Junior Data Analyst"
               />
             </Field>
-            <Field label="Recipient">
+            <Field label="Recipient" action={<MicButton onText={dictate("recipient")} label="Dictate recipient" />}>
               <Input
                 required
                 value={form.recipient}
@@ -107,7 +111,7 @@ function EmailPage() {
                 <option>Enthusiastic</option>
               </Select>
             </Field>
-            <Field label="Context (optional)">
+            <Field label="Context (optional)" action={<MicButton onText={dictate("context")} label="Dictate context" />}>
               <Textarea
                 rows={4}
                 value={form.context}
