@@ -15,14 +15,26 @@ export function Card({ children, className }: { children: ReactNode; className?:
   return <section className={cn("surface-card p-5 sm:p-6", className)}>{children}</section>;
 }
 
-export function Field({ label, children }: { label: string; children: ReactNode }) {
+export function Field({
+  label,
+  children,
+  action,
+}: {
+  label: string;
+  children: ReactNode;
+  action?: ReactNode;
+}) {
   return (
     <label className="flex flex-col gap-1.5 text-sm">
-      <span className="font-medium text-foreground">{label}</span>
+      <span className="flex min-h-9 flex-wrap items-center justify-between gap-2 font-medium text-foreground">
+        {label}
+        {action}
+      </span>
       {children}
     </label>
   );
 }
+
 
 const controlClass =
   "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/25";
