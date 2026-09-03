@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { analyzeJob } from "@/lib/ai.functions";
+import { MicButton } from "@/components/MicButton";
 import {
   ActionButton,
   Card,
@@ -70,7 +71,10 @@ function AnalyzerPage() {
       <div className="grid gap-6">
         <Card>
           <form onSubmit={submit} className="flex flex-col gap-4">
-            <Field label="Job description or research notes">
+            <Field
+              label="Job description or research notes"
+              action={<MicButton onText={(t) => setContent((v) => (v ? `${v} ${t}` : t))} label="Dictate notes" />}
+            >
               <Textarea
                 required
                 rows={10}
