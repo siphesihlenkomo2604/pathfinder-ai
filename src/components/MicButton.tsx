@@ -10,16 +10,12 @@ export function MicButton({
   onText,
   label = "Dictate",
   className,
-  onError,
 }: {
   onText: (text: string) => void;
   label?: string;
   className?: string;
-  onError?: (message: string) => void;
 }) {
   const { state, error, seconds, toggle } = useDictation(onText);
-
-  if (error && onError) onError(error);
 
   const recording = state === "recording";
   const busy = state === "transcribing";

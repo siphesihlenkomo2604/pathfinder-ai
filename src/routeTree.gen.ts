@@ -14,6 +14,7 @@ import { Route as AnalyzerRouteImport } from './routes/analyzer'
 import { Route as MentorRouteImport } from './routes/mentor'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const PlannerRoute = PlannerRouteImport.update({
   path: '/planner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTranscribeRoute = ApiTranscribeRouteImport.update({
+  id: '/api/transcribe',
+  path: '/api/transcribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/mentor': typeof MentorRoute
   '/notes': typeof NotesRoute
   '/planner': typeof PlannerRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/mentor': typeof MentorRoute
   '/notes': typeof NotesRoute
   '/planner': typeof PlannerRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,22 @@ export interface FileRoutesById {
   '/mentor': typeof MentorRoute
   '/notes': typeof NotesRoute
   '/planner': typeof PlannerRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analyzer' | '/mentor' | '/notes' | '/planner'
+  fullPaths:
+    '/' | '/analyzer' | '/mentor' | '/notes' | '/planner' | '/api/transcribe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analyzer' | '/mentor' | '/notes' | '/planner'
-  id: '__root__' | '/' | '/analyzer' | '/mentor' | '/notes' | '/planner'
+  to: '/' | '/analyzer' | '/mentor' | '/notes' | '/planner' | '/api/transcribe'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyzer'
+    | '/mentor'
+    | '/notes'
+    | '/planner'
+    | '/api/transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +94,7 @@ export interface RootRouteChildren {
   MentorRoute: typeof MentorRoute
   NotesRoute: typeof NotesRoute
   PlannerRoute: typeof PlannerRoute
+  ApiTranscribeRoute: typeof ApiTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlannerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/transcribe': {
+      id: '/api/transcribe'
+      path: '/api/transcribe'
+      fullPath: '/api/transcribe'
+      preLoaderRoute: typeof ApiTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   MentorRoute: MentorRoute,
   NotesRoute: NotesRoute,
   PlannerRoute: PlannerRoute,
+  ApiTranscribeRoute: ApiTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

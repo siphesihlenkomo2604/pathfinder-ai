@@ -50,7 +50,7 @@ export const Route = createFileRoute("/api/transcribe")({
               "audio/webm": "webm",
               "audio/flac": "flac",
             } as Record<string, string>
-          )[file.type.split(";")[0]] ?? "wav";
+          )[file.type.split(";")[0] ?? ""] ?? "wav";
 
         const upstream = new FormData();
         upstream.append("model", "openai/gpt-4o-transcribe");

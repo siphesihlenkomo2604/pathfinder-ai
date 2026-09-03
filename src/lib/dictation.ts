@@ -37,7 +37,7 @@ function encodeWav(chunks: Float32Array[], sampleRate: number): Blob {
   view.setUint32(40, samples.length * 2, true);
   let p = 44;
   for (let i = 0; i < samples.length; i++, p += 2) {
-    const s = Math.max(-1, Math.min(1, samples[i]));
+    const s = Math.max(-1, Math.min(1, samples[i] ?? 0));
     view.setInt16(p, s < 0 ? s * 0x8000 : s * 0x7fff, true);
   }
   return new Blob([buffer], { type: "audio/wav" });
